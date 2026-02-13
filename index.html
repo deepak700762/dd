@@ -6,8 +6,6 @@
   <title>Our Memories ❤️</title>
   <style>
     :root {
-      --bg1: #ffdee9;
-      --bg2: #b5fffc;
       --heart: #ff4d6d;
       --balloon1: #ff9ff3;
       --balloon2: #feca57;
@@ -17,10 +15,9 @@
     * { box-sizing: border-box; }
     html, body {
       margin: 0; padding: 0;
-      height: 100%; 
+      height: 100%;
       font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, rgba(255,222,233,0.6), rgba(181,255,252,0.6)),
-            url("assets/background.png") no-repeat center center fixed;
+      background: linear-gradient(135deg, #ffdee9, #b5fffc);
       background-size: cover;
     }
     .hearts { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
@@ -47,14 +44,14 @@
     }
     header h1 { font-size: 28px; margin: 0; }
     header p { font-size: 16px; margin: 4px 0 0; }
-    .sky { position: relative; width: 100%; height: 100vh; overflow: hidden; z-index: 2; }
+    .sky { position: relative; width: 100%; height: 100vh; overflow: visible; z-index: 2; }
     .balloon {
       position: absolute; width: 100px; height: 130px;
       border-radius: 50% 50% 45% 45%;
       box-shadow: inset -10px -20px 30px rgba(0,0,0,0.12),
                   0 12px 24px rgba(0,0,0,0.18);
       cursor: pointer; animation: floatUp linear infinite;
-      transform: translateY(110vh);
+      transform: translateY(90vh);
       z-index: 5;
     }
     .balloon::after {
@@ -68,7 +65,7 @@
       border-radius: 14px; filter: blur(1px);
     }
     @keyframes floatUp {
-      0% { transform: translateY(110vh); }
+      0% { transform: translateY(90vh); }
       100% { transform: translateY(-140vh); }
     }
     @keyframes burst {
@@ -92,21 +89,6 @@
     .modal-content p { font-size: 16px; margin-top: 8px; }
     .btn { padding: 10px 14px; border-radius: 12px; border: none; cursor: pointer;
       background: #ff6b81; color: white; font-weight: 600; margin-top: 12px; }
-    
-    /* Responsive styles */
-    @media (max-width: 768px) {
-      header h1 { font-size: 22px; }
-      header p { font-size: 14px; }
-      .balloon { width: 80px; height: 100px; }
-    }
-    @media (max-width: 480px) {
-      header { padding: 8px 12px; }
-      header h1 { font-size: 18px; }
-      header p { font-size: 12px; }
-      .balloon { width: 65px; height: 85px; }
-      .modal { width: 95vw; padding: 12px; }
-      .modal-content p { font-size: 14px; }
-    }
   </style>
 </head>
 <body>
@@ -126,9 +108,8 @@
 
 <script>
 const memories = [
-  { title: "Coffee Date ☕", type: "image", src: "assets/coffee.png", caption: "Tumhari hasi, meri nazar — bas wahi yaad hai." },
-  { title: "Long Drive 🚗", type: "video", src: "assets/drive.png", caption: "Tumhare favorite gaane aur hawa — perfect." },
-  { title: "Anniversary Dinner 🕯️", type: "image", src: "assets/dinner.png", caption: "Woh candlelight aur tum — mera favorite frame." }
+  { title: "Test Balloon 1", type: "image", src: "https://via.placeholder.com/300", caption: "Ye ek test image hai." },
+  { title: "Test Balloon 2", type: "image", src: "https://via.placeholder.com/300", caption: "Ye bhi ek test image hai." }
 ];
 
 const balloonColors = ["var(--balloon1)", "var(--balloon2)", "var(--balloon3)", "var(--balloon4)"];
@@ -174,4 +155,23 @@ function createBalloon(memory, index) {
 function showMemory(memory) {
   modalTitle.textContent = memory.title;
   modalContent.innerHTML = "";
-  if (memory.type ===
+  if (memory.type === "image") {
+    const img = document.createElement("img");
+    img.src = memory.src;
+    modalContent.appendChild(img);
+  }
+  const caption = document.createElement("p");
+  caption.textContent = memory.caption;
+  modalContent.appendChild(caption);
+  backdrop.style.display = "flex";
+}
+
+closeBtn.addEventListener("click", () => {
+  backdrop.style.display = "none";
+});
+
+spawnHearts();
+memories.forEach((m, i) => createBalloon(m, i));
+</script>
+</body>
+</html>
