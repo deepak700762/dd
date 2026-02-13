@@ -17,7 +17,8 @@
       margin: 0; padding: 0;
       height: 100%;
       font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #ffdee9, #b5fffc);
+      background: linear-gradient(135deg, #ffdee9, #b5fffc),
+                  url("assets/background.png") no-repeat center center fixed;
       background-size: cover;
       overflow: hidden;
     }
@@ -106,7 +107,7 @@
 <script>
 const memories = [
   { title: "Coffee Date ☕", type: "image", src: "assets/coffee.png", caption: "Tumhari hasi, meri nazar — bas wahi yaad hai." },
-  { title: "Long Drive 🚗", type: "video", src: "assets/drive.png", caption: "Tumhare favorite gaane aur hawa — perfect." },
+  { title: "Long Drive 🚗", type: "video", src: "assets/drive.mp4", caption: "Tumhare favorite gaane aur hawa — perfect." },
   { title: "Anniversary Dinner 🕯️", type: "image", src: "assets/dinner.png", caption: "Woh candlelight aur tum — mera favorite frame." }
 ];
 
@@ -165,4 +166,3 @@ memories.forEach((m, i) => createBalloon(m, i));
 </script>
 </body>
 </html>
-
