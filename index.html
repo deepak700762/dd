@@ -19,22 +19,7 @@
       font-family: "Poppins", sans-serif;
       background: linear-gradient(135deg, #ffdee9, #b5fffc);
       background-size: cover;
-    }
-    .hearts { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
-    .heart {
-      position: absolute; width: 22px; height: 22px;
-      transform: rotate(45deg); background: var(--heart);
-      opacity: 0.25; animation: floatHeart 14s linear infinite;
-    }
-    .heart::before, .heart::after {
-      content: ""; position: absolute; width: 22px; height: 22px;
-      background: var(--heart); border-radius: 50%;
-    }
-    .heart::before { top: -11px; left: 0; }
-    .heart::after { left: -11px; top: 0; }
-    @keyframes floatHeart {
-      0% { transform: translateY(0) rotate(45deg); }
-      100% { transform: translateY(-120vh) rotate(45deg); }
+      overflow: hidden;
     }
     header {
       position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
@@ -44,14 +29,14 @@
     }
     header h1 { font-size: 28px; margin: 0; }
     header p { font-size: 16px; margin: 4px 0 0; }
-    .sky { position: relative; width: 100%; height: 100vh; overflow: visible; z-index: 2; }
+    .sky { position: relative; width: 100%; height: 100vh; overflow: hidden; z-index: 2; }
     .balloon {
       position: absolute; width: 100px; height: 130px;
       border-radius: 50% 50% 45% 45%;
       box-shadow: inset -10px -20px 30px rgba(0,0,0,0.12),
                   0 12px 24px rgba(0,0,0,0.18);
       cursor: pointer; animation: floatUp linear infinite;
-      transform: translateY(90vh);
+      transform: translateY(100vh);
       z-index: 5;
     }
     .balloon::after {
@@ -65,7 +50,7 @@
       border-radius: 14px; filter: blur(1px);
     }
     @keyframes floatUp {
-      0% { transform: translateY(90vh); }
+      0% { transform: translateY(100vh); }
       100% { transform: translateY(-140vh); }
     }
     @keyframes burst {
@@ -89,10 +74,22 @@
     .modal-content p { font-size: 16px; margin-top: 8px; }
     .btn { padding: 10px 14px; border-radius: 12px; border: none; cursor: pointer;
       background: #ff6b81; color: white; font-weight: 600; margin-top: 12px; }
+    /* Responsive */
+    @media (max-width: 768px) {
+      header h1 { font-size: 22px; }
+      header p { font-size: 14px; }
+      .balloon { width: 80px; height: 100px; }
+    }
+    @media (max-width: 480px) {
+      header h1 { font-size: 18px; }
+      header p { font-size: 12px; }
+      .balloon { width: 65px; height: 85px; }
+      .modal { width: 95vw; padding: 12px; }
+      .modal-content p { font-size: 14px; }
+    }
   </style>
 </head>
 <body>
-  <div class="hearts" id="hearts"></div>
   <header>
     <h1>For us, with love ❤️</h1>
     <p>Har balloon me ek memory hai. Touch karke dekho.</p>
@@ -108,8 +105,9 @@
 
 <script>
 const memories = [
-  { title: "Test Balloon 1", type: "image", src: "https://via.placeholder.com/300", caption: "Ye ek test image hai." },
-  { title: "Test Balloon 2", type: "image", src: "https://via.placeholder.com/300", caption: "Ye bhi ek test image hai." }
+  { title: "Coffee Date ☕", type: "image", src: "assets/coffee.png", caption: "Tumhari hasi, meri nazar — bas wahi yaad hai." },
+  { title: "Long Drive 🚗", type: "video", src: "assets/drive.mp4", caption: "Tumhare favorite gaane aur hawa — perfect." },
+  { title: "Anniversary Dinner 🕯️", type: "image", src: "assets/dinner.png", caption: "Woh candlelight aur tum — mera favorite frame." }
 ];
 
 const balloonColors = ["var(--balloon1)", "var(--balloon2)", "var(--balloon3)", "var(--balloon4)"];
@@ -119,24 +117,12 @@ const modalTitle = document.getElementById("modalTitle");
 const modalContent = document.getElementById("modalContent");
 const closeBtn = document.getElementById("closeBtn");
 
-function spawnHearts(count = 20) {
-  const wrap = document.getElementById("hearts");
-  for (let i = 0; i < count; i++) {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.top = Math.random() * 100 + "vh";
-    heart.style.animationDuration = (8 + Math.random() * 6) + "s";
-    wrap.appendChild(heart);
-  }
-}
-
 function createBalloon(memory, index) {
   const balloon = document.createElement("div");
   balloon.className = "balloon";
   balloon.style.background = balloonColors[index % balloonColors.length];
   balloon.style.left = Math.random() * 90 + "vw";
-  balloon.style.animationDuration = (20 + Math.random() * 6) + "s";
+  balloon.style.animationDuration = (15 + Math.random() * 6) + "s";
   const shine = document.createElement("div");
   shine.className = "shine";
   balloon.appendChild(shine);
@@ -159,6 +145,11 @@ function showMemory(memory) {
     const img = document.createElement("img");
     img.src = memory.src;
     modalContent.appendChild(img);
+  } else if (memory.type === "video") {
+    const vid = document.createElement("video");
+    vid.src = memory.src;
+    vid.controls = true;
+    modalContent.appendChild(vid);
   }
   const caption = document.createElement("p");
   caption.textContent = memory.caption;
@@ -170,7 +161,6 @@ closeBtn.addEventListener("click", () => {
   backdrop.style.display = "none";
 });
 
-spawnHearts();
 memories.forEach((m, i) => createBalloon(m, i));
 </script>
 </body>
